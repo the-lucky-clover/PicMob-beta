@@ -1,7 +1,8 @@
 import React from 'react'
 import { motion } from 'framer-motion'
+import ThreeBackground from './ThreeBackground'
 
-// DISRUPTIVE HERO SECTION
+// DISRUPTIVE HERO SECTION WITH ELITE 3D BACKGROUND
 export default function Hero() {
   return (
     <section style={{
@@ -10,10 +11,12 @@ export default function Hero() {
       alignItems: 'center',
       justifyContent: 'center',
       position: 'relative',
-      overflow: 'hidden',
-      background: 'linear-gradient(135deg, #000 0%, #0a0a0f 100%)'
+      overflow: 'hidden'
     }}>
-      {/* GRID BACKGROUND */}
+      {/* ELITE 3D CYBERPUNK BACKGROUND */}
+      <ThreeBackground />
+
+      {/* GRID OVERLAY */}
       <div style={{
         position: 'absolute',
         top: 0,
@@ -24,30 +27,9 @@ export default function Hero() {
           linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)
         `,
-        backgroundSize: '100px 100px'
+        backgroundSize: '100px 100px',
+        zIndex: 2
       }} />
-
-      {/* FLOATING PARTICLES */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: 'absolute',
-            width: '2px',
-            height: '2px',
-            background: '#00f5ff',
-            borderRadius: '50%',
-            opacity: Math.random() * 0.8 + 0.2
-          }}
-          initial={{ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight }}
-          animate={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-            opacity: [0, 1, 0]
-          }}
-          transition={{ duration: 10 + Math.random() * 20, repeat: Infinity }}
-        />
-      ))}
 
       {/* HERO CONTENT */}
       <div style={{
