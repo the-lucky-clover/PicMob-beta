@@ -1,0 +1,32 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PicMob", "PicMob", "{63406A3E-18D2-C0F0-3424-26FA1C8D66CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "197B73BF-0067-487F-8077-0F8ACE079D58", "197B73BF-0067-487F-8077-0F8ACE079D58", "{F0547F06-CD12-3FE4-6F56-44A0E8BAA8CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicMobWindows", "PicMob\197B73BF-0067-487F-8077-0F8ACE079D58\Windows\PicMobWindows.csproj", "{E751C292-E6D9-459C-D9DF-DE43C959C1BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E751C292-E6D9-459C-D9DF-DE43C959C1BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E751C292-E6D9-459C-D9DF-DE43C959C1BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E751C292-E6D9-459C-D9DF-DE43C959C1BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E751C292-E6D9-459C-D9DF-DE43C959C1BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F0547F06-CD12-3FE4-6F56-44A0E8BAA8CE} = {63406A3E-18D2-C0F0-3424-26FA1C8D66CF}
+		{E751C292-E6D9-459C-D9DF-DE43C959C1BD} = {F0547F06-CD12-3FE4-6F56-44A0E8BAA8CE}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE22148D-37EB-41D4-960F-1BF858CC230D}
+	EndGlobalSection
+EndGlobal

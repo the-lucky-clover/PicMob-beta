@@ -1,0 +1,41 @@
+name = "picmob-worker"
+main = "src/worker.js"
+compatibility_date = "2024-11-01"
+
+[env.production.vars]
+ENVIRONMENT = "production"
+API_VERSION = "v1"
+
+# Database binding for D1
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "picmob-prod"
+database_id = "1b981a2b-0e29-4651-bead-7d0270428338"
+
+# R2 bucket for image storage
+[[env.production.r2_buckets]]
+binding = "IMAGES"
+bucket_name = "picmob-images-prod"
+
+# KV for sessions and cache
+[[env.production.kv_namespaces]]
+binding = "SESSIONS"
+id = "fde38a859391401bbbc9f7306a81bdc6"
+
+# Development environment
+[env.development.vars]
+ENVIRONMENT = "development"
+API_VERSION = "v1"
+
+[[env.development.d1_databases]]
+binding = "DB"
+database_name = "picmob-dev"
+database_id = "4601510d-ba93-4eeb-8953-c6a1922cf91a"
+
+[[env.development.r2_buckets]]
+binding = "IMAGES"
+bucket_name = "picmob-images-dev"
+
+[[env.development.kv_namespaces]]
+binding = "SESSIONS"
+id = "fde38a859391401bbbc9f7306a81bdc6"

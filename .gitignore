@@ -1,0 +1,32 @@
+# Build
+.build/
+*.xcbuild/
+*.xcodeproj/xcuserdata/
+*.swp
+*.swo
+
+# Dependencies
+Package.resolved
+ Pods/
+ .spm/
+ node_modules/
+
+# Models (too large)
+models/
+*.pt
+*.bin
+
+# Data
+data/
+*.raw
+*.cr2
+*.nef
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db

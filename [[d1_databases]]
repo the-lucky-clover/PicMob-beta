@@ -1,0 +1,11 @@
+[[d1_databases]]
+binding = "DB"
+database_id = "your-d1-id"
+
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "your-r2-bucket"
+
+[[ai]]
+binding = "AI"
+service = "your-ai-service"

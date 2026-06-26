@@ -1,0 +1,17 @@
+using System.Windows;
+
+namespace PicMobWindows
+{
+    public partial class App : Application
+    {
+    }
+}<Window x:Class="PicMobWindows.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PicMob" Height="600" Width="900">
+    <Grid>
+        <TextBlock Text="Welcome to PicMob for Windows!" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                   FontSize="32" FontWeight="Bold"/>
+    </Grid>
+</Window>

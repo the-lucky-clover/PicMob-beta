@@ -1,0 +1,38 @@
+{
+  "name": "picmob-api",
+  "version": "1.0.0",
+  "description": "PicMob API powered by Cloudflare Workers",
+  "main": "src/worker.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "deploy:prod": "wrangler deploy --env production",
+    "db:migrate": "wrangler d1 execute picmob-dev --file=./schema.sql",
+    "db:migrate:prod": "wrangler d1 execute picmob-prod --file=./schema.sql",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "api",
+    "photo-sharing",
+    "social-media"
+  ],
+  "author": "PicMob Team",
+  "license": "MIT",
+  "dependencies": {
+    "itty-router": "^4.0.13",
+    "jose": "^5.1.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20231218.0",
+    "wrangler": "^3.19.0",
+    "vitest": "^1.0.4",
+    "@vitest/coverage-v8": "^1.0.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

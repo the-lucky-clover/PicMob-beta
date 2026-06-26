@@ -1,0 +1,54 @@
+// In your "+" action handler
+import AppKit
+
+func addFolder() {
+    let panel = NSOpenPanel()
+    panel.canChooseFiles = false
+    panel.canChooseDirectories = true
+    panel.allowsMultipleSelection = false
+    panel.prompt = "Choose Folder"
+
+    guard panel.runModal() == .OK, let url = panel.url else { return }
+
+    // If your app is sandboxed, use a security-scoped bookmark
+    var resolvedURL = url
+    var bookmarkData: Data?
+
+    do {
+        if Bundle.main.entitlementsContainAppSandbox {
+            bookmarkData = try url.bookmarkData(options: .withSecurityScope, includingResourceValuesForKeys: nil, relativeTo: nil)
+            var isStale = false
+            resolvedURL = try URL(resolvingBookmarkData: bookmarkData!, options: .withSecurityScope, relativeTo: nil, bookmarkDataIsStale: &isStale)
+            guard resolvedURL.startAccessingSecurityScopedResource() else { return }
+        }
+        defer { if url != resolvedURL { resolvedURL.stopAccessingSecurityScopedResource() } }
+
+        // Collect image files
+        let allowed = Set(["jpg","jpeg","png","heic","tiff","gif","bmp","webp"])
+        var imageURLs: [URL] = []
+        let fm = FileManager.default
+        if let e = fm.enumerator(at: resolvedURL, includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles, .skipsPackageDescendants]) {
+            for case let fileURL as URL in e {
+                if allowed.contains(fileURL.pathExtension.lowercased()) {
+                    imageURLs.append(fileURL)
+                }
+            }
+        }
+
+        // Update your model on the main thread
+        DispatchQueue.main.async {
+            // Replace this placeholder append with a real item containing the folder and images
+            // e.g., sidebarItems.append(LibraryItem(name: resolvedURL.lastPathComponent, folderURL: resolvedURL, bookmark: bookmarkData, images: imageURLs))
+        }
+    } catch {
+        print("Add folder failed:", error)
+    }
+}
+
+// Helper to detect sandbox (optional)
+private extension Bundle {
+    var entitlementsContainAppSandbox: Bool {
+        // crude check—adjust if you already know you’re sandboxed
+        return FileManager.default.fileExists(atPath: "/var/containers") || ProcessInfo.processInfo.environment["APP_SANDBOX_CONTAINER_ID"] != nil
+    }
+}
