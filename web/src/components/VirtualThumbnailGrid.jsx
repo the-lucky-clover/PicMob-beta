@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { motion } from 'framer-motion'
 
-// SMART CACHE WITH PRELOADING
+// ERROR RECOVERY WITH GRACEFUL DEGRADATION
 export default function VirtualThumbnailGrid({ itemCount = 100000 }) {
   const containerRef = useRef()
   const [visibleRange, setVisibleRange] = useState({ start: 0, end: 50 })
+  const [errors, setErrors] = useState(new Set())
   
-  // Smart cache with LRU eviction
   const cache = useRef(new Map())
   const cacheOrder = useRef([])
   const maxCacheSize = 200
   const preloadCount = 30
   
-  // Calculate visible range
   const handleScroll = useCallback(() => {
     const container = containerRef.current
     if (!container) return
@@ -25,45 +24,30 @@ export default function VirtualThumbnailGrid({ itemCount = 100000 }) {
     const end = Math.min(itemCount, Math.ceil((scrollTop + height) / rowHeight) + preloadCount)
     
     setVisibleRange({ start, end })
-    
-    // Preload adjacent thumbnails
-    preloadAdjacent(end, itemCount)
   }, [itemCount])
   
-  // Preload next thumbnails
-  const preloadAdjacent = (currentIndex, total) => {
-    const preloadStart = currentIndex
-    const preloadEnd = Math.min(currentIndex + 50, total)
-    
-    for (let i = preloadStart; i < preloadEnd; i++) {
-      if (!cache.current.has(i)) {
-        getThumbnail(i)
-      }
-    }
-  }
-  
-  // Get thumbnail with LRU cache management
   const getThumbnail = useCallback((index) => {
     if (cache.current.has(index)) {
-      // Update LRU order
       const orderIndex = cacheOrder.current.indexOf(index)
       if (orderIndex > -1) cacheOrder.current.splice(orderIndex, 1)
       cacheOrder.current.push(index)
       return cache.current.get(index)
     }
     
-    // Evict oldest if cache full
     if (cache.current.size >= maxCacheSize) {
       const oldest = cacheOrder.current.shift()
       cache.current.delete(oldest)
     }
     
-    // Generate thumbnail
     const thumbnail = generateThumbnail(index)
     cache.current.set(index, thumbnail)
     cacheOrder.current.push(index)
     return thumbnail
   }, [])
+  
+  const handleError = (index) => {
+    setErrors(prev => new Set(prev).add(index))
+  }
   
   const generateThumbnail = (index) => {
     return `data:image/svg+xml;base64,${btoa(`
@@ -76,7 +60,15 @@ export default function VirtualThumbnailGrid({ itemCount = 100000 }) {
   
   const thumbnails = []
   for (let i = visibleRange.start; i < visibleRange.end; i++) {
-    thumbnails.push(<Thumbnail key={i} index={i} src={getThumbnail(i)} />)
+    thumbnails.push(
+      <Thumbnail 
+        key={i} 
+        index={i} 
+        src={getThumbnail(i)} 
+        hasError={errors.has(i)}
+        onError={() => handleError(i)}
+      />
+    )
   }
   
   return (
@@ -97,7 +89,7 @@ export default function VirtualThumbnailGrid({ itemCount = 100000 }) {
   )
 }
 
-function Thumbnail({ index, src }) {
+function Thumbnail({ index, src, hasError, onError }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -107,10 +99,31 @@ function Thumbnail({ index, src }) {
         background: '#12121a',
         borderRadius: '4px',
         overflow: 'hidden',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        position: 'relative'
       }}
     >
-      <img src={src} alt={`Photo ${index}`} loading="lazy" style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
+      {hasError ? (
+        <div style={{ 
+          width: '100%', 
+          height: '120px', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center',
+          background: '#0a0a0f',
+          color: '#8a8aa0'
+        }}>
+          ⚠️ Corrupted
+        </div>
+      ) : (
+        <img 
+          src={src} 
+          alt={`Photo ${index}`} 
+          loading="lazy"
+          onError={onError}
+          style={{ width: '100%', height: '120px', objectFit: 'cover' }} 
+        />
+      )}
     </motion.div>
   )
 }
